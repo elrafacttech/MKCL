@@ -74,6 +74,7 @@ public class LoginPost implements ApplicationContextAware {
 
 	private ExamEventGlobalSettingsServicesImpl exevGlobalSettingsImpl;
 
+	/** The login failed attempt services. */
 	private ILoginAttemptService loginAttemptService;
 
 	/**
@@ -127,29 +128,32 @@ public class LoginPost implements ApplicationContextAware {
 
 			User isValidUser = userServices.getUserById(dbUser.getLoginId());
 			
-			//Get Value from Property
+			/** Start CR-25028 the login failed Attempt Validation */
+			/** Get Value from Property for LoginBlockDuration ,BlockOnNoFailedLogins */
 			String loginBlockDuration = properties.getProperty("LoginBlockDuration");
 			String blockOnNoFailedLogins = properties.getProperty("BlockOnNoFailedLogins");
 
-			//Covert to Integer
+			/** Covert to Integer */
 			int convertBlockDuration = Integer.parseInt(loginBlockDuration);
 			int converBlockFailedCount = Integer.parseInt(blockOnNoFailedLogins);
 
-			//Get Login Attempts
+			/** Get Login Attempts */
 			int loginFailedAttemptsCount = dbUser.getLoginFailAttempts();
 	
 			
 			Date currentDate = Calendar.getInstance().getTime();
 			DateTime currentTimeStamp = new DateTime(currentDate);
 			
-            // validate Password
+			/** Validate Password */
 			if (!dbUser.getPassword().equals(user.getPassword()) || isValidUser.getIsDeleted()) {
 				model.addAttribute("loginId", user.getLoginId());
 				loginFailedAttemptsCount = loginFailedAttemptsCount + 1; //Increment Login Failed Attempt Count
 				dbUser.setLoginFailAttempts(loginFailedAttemptsCount);
 				
+				/** Checking Disabled is null or not */
 				if (dbUser.getDisabledOnDate() == null) {
-					if (loginFailedAttemptsCount == converBlockFailedCount) { //Login Attempt Failed Validation
+					/** Checking with converBlockFailedCount is equal to  loginFailedAttemptsCount */
+					if (loginFailedAttemptsCount == converBlockFailedCount) { 
 						dbUser.setDisabledOnDate(currentDate);
 						loginAttemptService.updateLoginAttempt(dbUser);
 						return "redirect:../login/loginpage?messageid=" + MessageConstants.INVALID_USERNAME;
@@ -160,13 +164,16 @@ public class LoginPost implements ApplicationContextAware {
 					}
 
 				} else {
-					// Blocker Time 30 Min Check Validation
+					/** Password not Match - Validate Disabled Date and Time difference */
 					Date disabledDate = dbUser.getDisabledOnDate();
 					DateTime disabledDateTimestamp = new DateTime(disabledDate);
+					/** Time difference Validation */
 					int blockDurationDiff = getDateDifference(disabledDateTimestamp,currentTimeStamp);
+					
 					if (blockDurationDiff <= convertBlockDuration) {
 						return "redirect:../login/loginpage?messageid=" + MessageConstants.LOGIN_ATTEMPT_ERROR_MESSAGE;
 					} else {
+						/** Password not match and time difference is above 30 minutes, set login Attempt 1 and disabled null */
 						dbUser.setLoginFailAttempts(1);
 						dbUser.setDisabledOnDate(null);
 						loginAttemptService.updateLoginAttempt(dbUser);
@@ -176,26 +183,33 @@ public class LoginPost implements ApplicationContextAware {
 				}
 			} 
 			else {
-				// Blocker Time 30 Min Check Validation
+				/** Password Match - Validate disabled date and time difference */
 				if (dbUser.getDisabledOnDate() != null) {
 						Date disabledDate = dbUser.getDisabledOnDate();
 						DateTime disabledDateTimestamp = new DateTime(disabledDate);
+						/** Time difference Validation */
 						int blockDurationDiff = getDateDifference(disabledDateTimestamp,currentTimeStamp);
+						
 							if (blockDurationDiff <= convertBlockDuration) {
 								return "redirect:../login/loginpage?messageid=" + MessageConstants.LOGIN_ATTEMPT_ERROR_MESSAGE;
 							}else {
+								/** After Successfully login , set login Attempt 0 and disabled null */
 								dbUser.setLoginFailAttempts(0);
 								dbUser.setDisabledOnDate(null);
 								loginAttemptService.updateLoginAttempt(dbUser);
 							}
 					
 				     }else {
+				    	    /** Password Match - After Successfully login , set login Attempt 0 and disabled null */
 				    	    dbUser.setLoginFailAttempts(0);
 				    	    dbUser.setDisabledOnDate(null);
 							loginAttemptService.updateLoginAttempt(dbUser);
 				     }
 
 			}
+			/** End CR-25028 The login failed Attempt Validation */
+			
+			
 			sessionWrap.addToSession("loginStatus", "1");
 
 			/* *********Set Client in session************* */
