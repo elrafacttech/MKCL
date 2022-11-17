@@ -135,7 +135,7 @@ public class LoginPost implements ApplicationContextAware {
 
 			/** Covert to Integer */
 			int convertBlockDuration = Integer.parseInt(loginBlockDuration);
-			int converBlockFailedCount = Integer.parseInt(blockOnNoFailedLogins);
+			int convertBlockFailedCount = Integer.parseInt(blockOnNoFailedLogins);
 
 			/** Get Login Attempts */
 			int loginFailedAttemptsCount = dbUser.getLoginFailAttempts();
@@ -152,8 +152,8 @@ public class LoginPost implements ApplicationContextAware {
 				
 				/** Checking Disabled is null or not */
 				if (dbUser.getDisabledOnDate() == null) {
-					/** Checking with converBlockFailedCount is equal to  loginFailedAttemptsCount */
-					if (loginFailedAttemptsCount == converBlockFailedCount) { 
+					/** Checking with convertBlockFailedCount is equal to  loginFailedAttemptsCount */
+					if (loginFailedAttemptsCount == convertBlockFailedCount) { 
 						dbUser.setDisabledOnDate(currentDate);
 						loginAttemptService.updateLoginAttempt(dbUser);
 						return "redirect:../login/loginpage?messageid=" + MessageConstants.INVALID_USERNAME;
@@ -193,14 +193,14 @@ public class LoginPost implements ApplicationContextAware {
 							if (blockDurationDiff <= convertBlockDuration) {
 								return "redirect:../login/loginpage?messageid=" + MessageConstants.LOGIN_ATTEMPT_ERROR_MESSAGE;
 							}else {
-								/** After Successfully login , set login Attempt 0 and disabled null */
+								/** After Successfully login , set login Attempt 0 and DisabledOnDate null */
 								dbUser.setLoginFailAttempts(0);
 								dbUser.setDisabledOnDate(null);
 								loginAttemptService.updateLoginAttempt(dbUser);
 							}
 					
 				     }else {
-				    	    /** Password Match - After Successfully login , set login Attempt 0 and disabled null */
+				    	    /** Password Match - After Successfully login , set login Attempt 0 and DisabledOnDate null */
 				    	    dbUser.setLoginFailAttempts(0);
 				    	    dbUser.setDisabledOnDate(null);
 							loginAttemptService.updateLoginAttempt(dbUser);
