@@ -55,14 +55,14 @@ public class ActionLogUserController extends PaginationHelper implements
 	private static final String PAGINATION = "pagination";
 	
 	//List Binding
-	private static final String USERLIST = "UserList";
-	private static final String USERSESSION = "UserSessionList";
-	private static final String USERSUMMARYSESSION = "UserSessionSummaryList";
+	private static final String USERLIST = "UserLogList";
+	private static final String USERSESSION = "UserSessionLogList";
+	private static final String USERACTIVITY = "UserActivityLogList";
 	
     //Redirect Page
 	private static final String USERLISTVIEW = "actionLog/userList";
 	private static final String USERSESSIONLISTVIEW = "actionLog/userSessionLogList";
-	private static final String USERSUMMARYSESSIONLISTVIEW = "actionLog/userActivityLogList";
+	private static final String USERACTIVITYLISTVIEW = "actionLog/userActivityLogList";
 	
 	
 	/*
@@ -217,13 +217,15 @@ public class ActionLogUserController extends PaginationHelper implements
 			model.addAttribute("userId", request.getParameter("userId"));
 			model.addAttribute("userName", request.getParameter("userName"));
 			
+			String endTime = request.getParameter("endTime");
+			
 			// get user Id from Request
 			//model.addAttribute("userSessionId", "8");
 
 			// 3 Get Object list.
 			Pagination pagination = new Pagination();
 			pagination.setPropertyName("");
-			pagination.setListName(USERSUMMARYSESSION);
+			pagination.setListName(USERACTIVITY);
 			if (searchText != null && !(searchText.equals(""))) {
 				pagination.setPropertyName("");
 				userActivityServicesImpl.pagination(null, pagination,
@@ -232,7 +234,7 @@ public class ActionLogUserController extends PaginationHelper implements
 				userActivityServicesImpl.pagination(null, pagination,
 						null, model);
 			}
-			return USERSUMMARYSESSIONLISTVIEW;
+			return USERACTIVITYLISTVIEW;
 		} catch (Exception ex) {
 
 			LoggerFactory.getLogger(ActionLogSummaryController.class).error(
@@ -339,7 +341,7 @@ public class ActionLogUserController extends PaginationHelper implements
 		model.addAttribute("userId", request.getParameter("userId"));
 		model.addAttribute("userName", request.getParameter("userName"));
 
-		pagination.setListName(USERSUMMARYSESSION);
+		pagination.setListName(USERACTIVITY);
 		try {
 			if (searchText != null && !(searchText.equals(""))) {
 				pagination.setPropertyName("userActivityLogId");
@@ -352,7 +354,7 @@ public class ActionLogUserController extends PaginationHelper implements
 		} catch (Exception ex) {
 			LOGGER.error("exception while calling paginationPrev method.");
 		}
-		return USERSUMMARYSESSIONLISTVIEW;
+		return USERACTIVITYLISTVIEW;
 
 	}
 
@@ -377,7 +379,7 @@ public class ActionLogUserController extends PaginationHelper implements
 		model.addAttribute("userName", request.getParameter("userName"));
 		
 		
-		pagination.setListName(USERSUMMARYSESSION);
+		pagination.setListName(USERACTIVITY);
 		try {
 			if (searchText != null && !(searchText.equals(""))) {
 				pagination.setPropertyName("userActivityLogId");
@@ -390,7 +392,7 @@ public class ActionLogUserController extends PaginationHelper implements
 		} catch (Exception ex) {
 			LOGGER.error("exception while calling nextPost OESCLIENT User Controller  method.");
 		}
-		return USERSUMMARYSESSIONLISTVIEW;
+		return USERACTIVITYLISTVIEW;
 	}
 
 	

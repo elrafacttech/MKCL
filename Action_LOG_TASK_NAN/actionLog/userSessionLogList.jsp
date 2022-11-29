@@ -24,6 +24,9 @@
 			<h2>
 				<spring:message code="actionLogSessionlist.users" />
 			</h2>
+		    <h4>
+			   <spring:message code="actionLogSessionlist.userSessionLogsList" />
+			</h4>
 			<label><b><spring:message code="actionLogSessionlist.usernameKey" /> ${userName} </b></label>
 			<br>
 			<label><b><spring:message code="actionLogSessionlist.useridKey" /> ${userId} </b></label>
@@ -42,7 +45,7 @@
 	<div ><!-- class="holder" -->
 		
 
-		<c:if test="${UserSessionList != null}">
+		<c:if test="${UserSessionLogList != null}">
 			<!--Integrated data table  -->
 			<table class="table table-striped table-bordered" id="demotable" style="font-size: 15px;">
 				<thead>
@@ -73,9 +76,9 @@
 					</tr>
 				</tfoot>
 				
-				<c:if test="${fn:length(UserSessionList) != 0}">
+				<c:if test="${fn:length(UserSessionLogList) != 0}">
 					<tbody>
-						<c:forEach var="listObj" items="${UserSessionList}">
+						<c:forEach var="listObj" items="${UserSessionLogList}">
 							<tr>
 
 								<td>${listObj.startTime}</td>
@@ -91,7 +94,7 @@
 				</c:if>
 			</table>
 			
-			<c:if test="${fn:length(UserSessionList) != 0}">
+			<c:if test="${fn:length(UserSessionLogList) != 0}">
 				<!--Display count of records  -->
 				<div class="span5 ml-0">
 					<spring:message code="global.pagination.showing"></spring:message>
@@ -112,7 +115,7 @@
 						<ul>
 						<c:choose>
 							<c:when
-								test="${disablePrev==true || (fn:length(UserSessionList)<=pagination.recordsPerPage && pagination.start==0)}">
+								test="${disablePrev==true || (fn:length(UserSessionLogList)<=pagination.recordsPerPage && pagination.start==0)}">
 								<li class="prev"><a href="#" id="prev_anchor_tag"
 									style="display: none;"><spring:message
 											code="global.previous"></spring:message>
@@ -166,12 +169,15 @@
 
 		</c:if>
 </div>
-</div>
+<br>
+<br>
 <center>
 		<a href="../actionLog/userLogList" class="btn btn-main btn-rounded btn-long btn-sm">
 		<spring:message code="global.back" />
 		</a>
 </center>
+</div>
+
 	<script type="text/javascript"
 		src="<c:url value="${resourcespath}js/gridDataTable.js"></c:url>">
 		

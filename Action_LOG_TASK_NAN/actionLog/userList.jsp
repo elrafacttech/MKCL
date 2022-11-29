@@ -24,6 +24,9 @@
 			<h2>
 				<spring:message code="actionLogUserlist.users" />
 			</h2>
+			<h4>
+			<spring:message code="actionLogUserlist.userLogsList" />
+			</h4>
 		</div>
 	</div>
 
@@ -34,7 +37,7 @@
 		
 		
 
-		<c:if test="${UserList != null}">
+		<c:if test="${UserLogList != null}">
 			<!--Integrated data table  -->
 			<table class="table table-striped table-bordered" id="demotable" style="font-size: 15px;">
 				<thead>
@@ -64,9 +67,9 @@
 							</div></th> --%>
 					</tr>
 				</tfoot>
-				<c:if test="${fn:length(UserList) != 0}">
+				<c:if test="${fn:length(UserLogList) != 0}">
 					<tbody>
-						<c:forEach var="listObj" items="${UserList}">
+						<c:forEach var="listObj" items="${UserLogList}">
 							<tr>
 
 								<td>${listObj.firstName} ${listObj.thirdName}</td>
@@ -81,7 +84,7 @@
 
 				</c:if>
 			</table>
-			<c:if test="${fn:length(UserList) != 0}">
+			<c:if test="${fn:length(UserLogList) != 0}">
 				<!--Display count of records  -->
 				<div class="span5 ml-0">
 					<spring:message code="global.pagination.showing"></spring:message>
@@ -102,7 +105,7 @@
 						<ul>
 						<c:choose>
 							<c:when
-								test="${disablePrev==true || (fn:length(UserList)<=pagination.recordsPerPage && pagination.start==0)}">
+								test="${disablePrev==true || (fn:length(UserLogList)<=pagination.recordsPerPage && pagination.start==0)}">
 								<li class="prev"><a href="#" id="prev_anchor_tag"
 									style="display: none;"><spring:message
 											code="global.previous"></spring:message>

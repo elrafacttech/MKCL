@@ -24,6 +24,9 @@
 			<h2>
 				<spring:message code="actionLogSummaryList.users" />
 			</h2>
+			<h4>
+			<spring:message code="actionLogSummaryList.userActivityLogsList" />
+			</h4>
 			<label><b><spring:message code="actionLogSummaryList.usernameKey" />  ${userName} </b></label>
 			<br>
 			<label><b><spring:message code="actionLogSummaryList.useridKey" /> ${userId} </b></label>
@@ -46,7 +49,7 @@
 		
 		
 
-		<c:if test="${UserSessionSummaryList != null}">
+		<c:if test="${UserActivityLogList != null}">
 			<!--Integrated data table  -->
 			<table class="table table-striped table-bordered" id="demotable" style="font-size: 15px;">
 				<thead>
@@ -68,9 +71,9 @@
 
 					</tr>
 				</tfoot>
-				<c:if test="${fn:length(UserSessionSummaryList) != 0}">
+				<c:if test="${fn:length(UserActivityLogList) != 0}">
 					<tbody>
-						<c:forEach var="listObj" items="${UserSessionSummaryList}">
+						<c:forEach var="listObj" items="${UserActivityLogList}">
 							<tr>
 								<td>${listObj.startTime}</td>
 								<td>${listObj.endTime}</td>
@@ -85,7 +88,7 @@
 				<input type="hidden" id="userNameVal" name="userNameVal"
 							value="${userName}" />
 			
-			<c:if test="${fn:length(UserSessionSummaryList) != 0}">
+			<c:if test="${fn:length(UserActivityLogList) != 0}">
 				<!--Display count of records  -->
 				<div class="span5 ml-0">
 					<spring:message code="global.pagination.showing"></spring:message>
@@ -106,7 +109,7 @@
 					<ul>
 						<c:choose>
 							<c:when
-								test="${disablePrev==true || (fn:length(UserSessionSummaryList)<=pagination.recordsPerPage && pagination.start==0)}">
+								test="${disablePrev==true || (fn:length(UserActivityLogList)<=pagination.recordsPerPage && pagination.start==0)}">
 								<li class="prev"><a href="#" id="prev_anchor_tag"
 									style="display: none;"><spring:message
 											code="global.previous"></spring:message>
@@ -171,12 +174,15 @@
 			</c:if>
 		</c:if>
 </div>
-</div>
+<br>
+<br>
 <center>
 		<a href="../actionLog/userSessionLogList?userId=${userId}&userName=${userName}" class="btn btn-main btn-rounded btn-long btn-sm">
 		<spring:message code="global.back" />
 		</a>
 </center>
+</div>
+
 	<script type="text/javascript"
 		src="<c:url value="${resourcespath}js/gridDataTable.js"></c:url>">
 		
