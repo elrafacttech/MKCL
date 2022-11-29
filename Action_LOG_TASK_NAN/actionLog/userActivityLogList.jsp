@@ -81,12 +81,9 @@
 					</tbody>
 				</c:if>
 			</table>
-			
-				<center>
-					<a href="../actionLog/userSessionLogList?userId=${userId}&userName=${userName}" class="btn btn-secondary btn-rounded btn-long btn-sm ">
-					<spring:message code="global.back" />
-					</a>
-			</center>
+				<input type="hidden" id="userIdVal" name="userIdVal" value="${userId}" />
+				<input type="hidden" id="userNameVal" name="userNameVal"
+							value="${userName}" />
 			
 			<c:if test="${fn:length(UserSessionSummaryList) != 0}">
 				<!--Display count of records  -->
@@ -106,7 +103,7 @@
 				
 				<!--Display pagination buttons  -->
 				<div class="dataTables_paginate paging_bootstrap pagination">
-						<ul>
+					<ul>
 						<c:choose>
 							<c:when
 								test="${disablePrev==true || (fn:length(UserSessionSummaryList)<=pagination.recordsPerPage && pagination.start==0)}">
@@ -175,6 +172,11 @@
 		</c:if>
 </div>
 </div>
+<center>
+		<a href="../actionLog/userSessionLogList?userId=${userId}&userName=${userName}" class="btn btn-main btn-rounded btn-long btn-sm">
+		<spring:message code="global.back" />
+		</a>
+</center>
 	<script type="text/javascript"
 		src="<c:url value="${resourcespath}js/gridDataTable.js"></c:url>">
 		
@@ -250,13 +252,17 @@
 											
 												var searchText = $('#search').val();
 												var userSessionId = $('#userSessionId').val();
-												window.location.href = '../actionLog/userActivityLogList?searchText='+ searchText +'&userSessionId='+userSessionId;
+												var startTime = $('#startTime').val();
+												var endTime = $('#endTime').val();
+												var userId = $('#userId').val();
+							        			var userName = $('#userName').val();
+												window.location.href = '../actionLog/userActivityLogList?searchText='+ searchText +'&userSessionId='+userSessionId+'&startTime='+startTime+'&endTime='+endTime+'&userId='+ userId +'&userName='+userName;
 											});
 							$('#back')
 					        .click(
 					        		function(){
-					        			var userId = $('#userId').val();
-					        			var userName = $('#userName').val();
+					        			var userId = $('#userIdVal').val();
+					        			var userName = $('#userNameVal').val();
 					        			window.location.href='../actionLog/userSessionLogList?userId='+ userId +'&userName='+userName;
 					        		});
 

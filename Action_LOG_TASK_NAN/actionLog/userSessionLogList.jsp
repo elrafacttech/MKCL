@@ -90,11 +90,6 @@
 
 				</c:if>
 			</table>
-				<center>
-					<a href="../actionLog/userLogList" class="btn btn-secondary btn-rounded btn-long btn-sm ">
-					<spring:message code="global.back" />
-					</a>
-			</center>
 			
 			<c:if test="${fn:length(UserSessionList) != 0}">
 				<!--Display count of records  -->
@@ -168,9 +163,15 @@
 					</form:form>
 				</div>
 			</c:if>
+
 		</c:if>
 </div>
 </div>
+<center>
+		<a href="../actionLog/userLogList" class="btn btn-main btn-rounded btn-long btn-sm">
+		<spring:message code="global.back" />
+		</a>
+</center>
 	<script type="text/javascript"
 		src="<c:url value="${resourcespath}js/gridDataTable.js"></c:url>">
 		
